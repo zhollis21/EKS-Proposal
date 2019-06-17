@@ -21,7 +21,7 @@ public class CameraControl : MonoBehaviour
         }
         else if (Input.GetAxis("Horizontal") > .3)
         {
-            transform.RotateAround(rotateAroundObject.position, Vector3.up, Time.deltaTime * 100);
+            transform.RotateAround(rotateAroundObject.position, Vector3.down, Time.deltaTime * 100);
         }
     }
 }
