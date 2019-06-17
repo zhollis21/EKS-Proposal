@@ -20,7 +20,7 @@ public class OilController : MonoBehaviour
     {
         mf = GetComponent<MeshFilter>().mesh;
 
-        mf.vertices = GetCorrectVertices();        
+        mf.vertices = GetCorrectVertices();
     }
 
     // Update is called once per frame
@@ -33,26 +33,37 @@ public class OilController : MonoBehaviour
     {
         return new Vector3[]
         {
+            // Front Face
             LowerFrontRight.position,
             LowerFrontLeft.position,
             UpperFrontRight.position,
             UpperFrontLeft.position,
+
+            // Back Face
             UpperBackRight.position,
             UpperBackLeft.position,
             LowerBackRight.position,
             LowerBackLeft.position,
+
+            // Top Face
             UpperFrontRight.position,
             UpperFrontLeft.position,
             UpperBackRight.position,
             UpperBackLeft.position,
+
+            // Bottom Face
             LowerBackRight.position,
             LowerFrontRight.position,
             LowerFrontLeft.position,
             LowerBackLeft.position,
+
+            // Left Face
             LowerFrontLeft.position,
             UpperFrontLeft.position,
             UpperBackLeft.position,
             LowerBackLeft.position,
+
+            // Right Face
             LowerBackRight.position,
             UpperBackRight.position,
             UpperFrontRight.position,
