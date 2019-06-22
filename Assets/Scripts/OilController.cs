@@ -32,17 +32,17 @@ public class OilController : MonoBehaviour
         _zSlope = CalculateZOverYSlope(UpperFrontRight.position, LowerFrontRight.position);
         _zIntercept = CalculateZIntercept(UpperFrontRight.position, _zSlope);
 
-        _oilMesh.vertices = GetVerticesForOilMesh();
-        _waterMesh.vertices = GetVerticesForWaterMesh();
+        _oilMesh.vertices = GetVerticesForMeshAtYPoints(OilBottom, OilWaterLine.position.y);
+        _waterMesh.vertices = GetVerticesForMeshAtYPoints(OilWaterLine.position.y, WaterTop);
     }
 
-    // Update is called once per frame
-    void Update()
+        // Update is called once per frame
+        void Update()
     {
         OilWaterLine.position += Vector3.up * Input.GetAxis("Vertical") * Time.deltaTime;
 
-        _oilMesh.vertices = GetVerticesForOilMesh();
-        _waterMesh.vertices = GetVerticesForWaterMesh();
+        _oilMesh.vertices = GetVerticesForMeshAtYPoints(OilBottom, OilWaterLine.position.y);
+        _waterMesh.vertices = GetVerticesForMeshAtYPoints(OilWaterLine.position.y, WaterTop);
     }
 
     private float CalculateXOverYSlope(Vector3 P1, Vector3 P2)
@@ -105,109 +105,54 @@ public class OilController : MonoBehaviour
         return point;
     }
 
-    private Vector3[] GetVerticesForWaterMesh()
+    private Vector3[] GetVerticesForMeshAtYPoints(float yBottom, float yTop)
     {
-        var WaterUpperFrontRight = GetFrontRightVerticesAtY(WaterTop);
-        var WaterUpperFrontLeft = GetFrontLeftVerticesAtY(WaterTop);
-        var WaterUpperBackRight = GetBackRightVerticesAtY(WaterTop);
-        var WaterUpperBackLeft = GetBackLeftVerticesAtY(WaterTop);
-
-        // The Oil Water Line is the lower part of the water
-        var WaterLowerFrontRight = GetFrontRightVerticesAtY(OilWaterLine.position.y);
-        var WaterLowerFrontLeft = GetFrontLeftVerticesAtY(OilWaterLine.position.y);
-        var WaterLowerBackRight = GetBackRightVerticesAtY(OilWaterLine.position.y);
-        var WaterLowerBackLeft = GetBackLeftVerticesAtY(OilWaterLine.position.y);
+        var LowerFrontRight = GetFrontRightVerticesAtY(yBottom);
+        var LowerFrontLeft = GetFrontLeftVerticesAtY(yBottom);
+        var LowerBackRight = GetBackRightVerticesAtY(yBottom);
+        var LowerBackLeft = GetBackLeftVerticesAtY(yBottom);
+        var UpperFrontRight = GetFrontRightVerticesAtY(yTop);
+        var UpperFrontLeft = GetFrontLeftVerticesAtY(yTop);
+        var UpperBackRight = GetBackRightVerticesAtY(yTop);
+        var UpperBackLeft = GetBackLeftVerticesAtY(yTop);
 
         return new Vector3[]
         {
             // Front Face
-            WaterLowerFrontRight,
-            WaterLowerFrontLeft,
-            WaterUpperFrontRight,
-            WaterUpperFrontLeft,
+            LowerFrontRight,
+            LowerFrontLeft,
+            UpperFrontRight,
+            UpperFrontLeft,
 
             // Back Face
-            WaterUpperBackRight,
-            WaterUpperBackLeft,
-            WaterLowerBackRight,
-            WaterLowerBackLeft,
+            UpperBackRight,
+            UpperBackLeft,
+            LowerBackRight,
+            LowerBackLeft,
 
             // Top Face
-            WaterUpperFrontRight,
-            WaterUpperFrontLeft,
-            WaterUpperBackRight,
-            WaterUpperBackLeft,
+            UpperFrontRight,
+            UpperFrontLeft,
+            UpperBackRight,
+            UpperBackLeft,
 
             // Bottom Face
-            WaterLowerBackRight,
-            WaterLowerFrontRight,
-            WaterLowerFrontLeft,
-            WaterLowerBackLeft,
+            LowerBackRight,
+            LowerFrontRight,
+            LowerFrontLeft,
+            LowerBackLeft,
 
             // Left Face
-            WaterLowerFrontLeft,
-            WaterUpperFrontLeft,
-            WaterUpperBackLeft,
-            WaterLowerBackLeft,
+            LowerFrontLeft,
+            UpperFrontLeft,
+            UpperBackLeft,
+            LowerBackLeft,
 
             // Right Face
-            WaterLowerBackRight,
-            WaterUpperBackRight,
-            WaterUpperFrontRight,
-            WaterLowerFrontRight
-        };
-    }
-
-    private Vector3[] GetVerticesForOilMesh()
-    {
-        var OilLowerFrontRight = GetFrontRightVerticesAtY(OilBottom);
-        var OilLowerFrontLeft = GetFrontLeftVerticesAtY(OilBottom);
-        var OilLowerBackRight = GetBackRightVerticesAtY(OilBottom);
-        var OilLowerBackLeft = GetBackLeftVerticesAtY(OilBottom);
-
-        // The Oil Water Line is the upper part of the oil 
-        var OilUpperFrontRight = GetFrontRightVerticesAtY(OilWaterLine.position.y);
-        var OilUpperFrontLeft = GetFrontLeftVerticesAtY(OilWaterLine.position.y);
-        var OilUpperBackRight = GetBackRightVerticesAtY(OilWaterLine.position.y);
-        var OilUpperBackLeft = GetBackLeftVerticesAtY(OilWaterLine.position.y);
-
-        return new Vector3[]
-        {
-            // Front Face
-            OilLowerFrontRight,
-            OilLowerFrontLeft,
-            OilUpperFrontRight,
-            OilUpperFrontLeft,
-
-            // Back Face
-            OilUpperBackRight,
-            OilUpperBackLeft,
-            OilLowerBackRight,
-            OilLowerBackLeft,
-
-            // Top Face
-            OilUpperFrontRight,
-            OilUpperFrontLeft,
-            OilUpperBackRight,
-            OilUpperBackLeft,
-
-            // Bottom Face
-            OilLowerBackRight,
-            OilLowerFrontRight,
-            OilLowerFrontLeft,
-            OilLowerBackLeft,
-
-            // Left Face
-            OilLowerFrontLeft,
-            OilUpperFrontLeft,
-            OilUpperBackLeft,
-            OilLowerBackLeft,
-
-            // Right Face
-            OilLowerBackRight,
-            OilUpperBackRight,
-            OilUpperFrontRight,
-            OilLowerFrontRight
+            LowerBackRight,
+            UpperBackRight,
+            UpperFrontRight,
+            LowerFrontRight
         };
     }
 }
