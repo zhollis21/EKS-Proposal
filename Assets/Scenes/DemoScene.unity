@@ -381,13 +381,5 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 444437255, guid: c8de5c182978b4545ab94b36857a6c27, type: 3}
-      propertyPath: WaterTop
-      value: 3.22
-      objectReference: {fileID: 0}
-    - target: {fileID: 444437255, guid: c8de5c182978b4545ab94b36857a6c27, type: 3}
-      propertyPath: OilBottom
-      value: 0.3
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c8de5c182978b4545ab94b36857a6c27, type: 3}

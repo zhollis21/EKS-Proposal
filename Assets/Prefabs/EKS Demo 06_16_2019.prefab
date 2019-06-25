@@ -1920,13 +1920,9 @@ MonoBehaviour:
   WaterMeshFilter: {fileID: 4626286292419686539}
   OilWaterLine: {fileID: 4517360839202787984}
   UpperFrontRight: {fileID: 996323711700965706}
-  UpperFrontLeft: {fileID: 8119953066264184831}
-  UpperBackRight: {fileID: 266548847911338645}
-  UpperBackLeft: {fileID: 707928789782058879}
   LowerFrontRight: {fileID: 4409253059371840596}
-  LowerFrontLeft: {fileID: 3598557463182817886}
-  LowerBackRight: {fileID: 5179902379083489229}
-  LowerBackLeft: {fileID: 4994257537833948590}
+  WaterTop: 3.22
+  OilBottom: 0.3
 --- !u!1 &5719225938368667138
 GameObject:
   m_ObjectHideFlags: 0
