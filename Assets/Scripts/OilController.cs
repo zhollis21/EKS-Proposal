@@ -33,8 +33,8 @@ public class OilController : MonoBehaviour
         _waterMesh.vertices = GetVerticesForMeshAtYPoints(OilWaterLine.position.y, WaterTop);
     }
 
-        // Update is called once per frame
-        void Update()
+    // Update is called once per frame
+    void Update()
     {
         OilWaterLine.position += Vector3.up * Input.GetAxis("Vertical") * Time.deltaTime;
 
