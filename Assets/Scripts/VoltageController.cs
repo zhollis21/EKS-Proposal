@@ -6,13 +6,14 @@ public class VoltageController : MonoBehaviour
     public Slider slider;
     public Image sliderFill;
     public InputField inputField;
+    public Image circleFill;
     public int minValue;
     public int maxValue;
     public float defaultValue;
 
-    private Color _green = new Color(0, 1, 0);
-    private Color _yellow = new Color(1, 1, 0);
-    private Color _red = new Color(1, 0, 0);
+    private Color _green = new Color(0, 1, 0, 0.75f);
+    private Color _yellow = new Color(1, 1, 0, 0.75f);
+    private Color _red = new Color(1, 0, 0, 0.7f);
 
     // Start is called before the first frame update
     void Start()
@@ -20,22 +21,33 @@ public class VoltageController : MonoBehaviour
         slider.minValue = minValue;
         slider.maxValue = maxValue;
         slider.value = defaultValue;
-        SetSliderColor();
+        SetImageColor(sliderFill);
         slider.onValueChanged.AddListener(x => OnSliderChanged(x));
 
         inputField.text = slider.value.ToString();
         inputField.onValueChanged.AddListener(x => OnInputFieldChanged(x));
+
+        UpdateCircleFill();
     }
 
-    private void SetSliderColor()
+    private void SetImageColor(Image img)
     {
         if (slider.normalizedValue < .5)
         {
-            sliderFill.color = Color.Lerp(_green, _yellow, slider.normalizedValue * 2);
+            img.color = Color.Lerp(_green, _yellow, slider.normalizedValue * 2);
         }
         else
         {
-            sliderFill.color = Color.Lerp(_yellow, _red, (slider.normalizedValue - 0.5f) * 2);
+            img.color = Color.Lerp(_yellow, _red, (slider.normalizedValue - 0.5f) * 2);
+        }
+    }
+
+    private void UpdateCircleFill()
+    {
+        if (circleFill != null)
+        {
+            circleFill.fillAmount = slider.normalizedValue;
+            SetImageColor(circleFill);
         }
     }
 
@@ -43,7 +55,8 @@ public class VoltageController : MonoBehaviour
     {
         // Slider has build in min and max so we don't need to do any checking
         inputField.text = value.ToString();
-        SetSliderColor();
+        SetImageColor(sliderFill);
+        UpdateCircleFill();
     }
 
     private void OnInputFieldChanged(string input)
@@ -64,7 +77,8 @@ public class VoltageController : MonoBehaviour
         else
         {
             slider.value = value;
-            SetSliderColor();
+            SetImageColor(sliderFill);
+            UpdateCircleFill();
         }
     }
 }
