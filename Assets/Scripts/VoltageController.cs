@@ -6,14 +6,13 @@ public class VoltageController : MonoBehaviour
     public Slider slider;
     public Image sliderFill;
     public InputField inputField;
-    public Image circleFill;
     public int minValue;
     public int maxValue;
     public float defaultValue;
 
-    private Color _green = new Color(0, 1, 0, 0.75f);
-    private Color _yellow = new Color(1, 1, 0, 0.75f);
-    private Color _red = new Color(1, 0, 0, 0.7f);
+    private Color _green = new Color(0, 1, 0);
+    private Color _yellow = new Color(1, 1, 0);
+    private Color _red = new Color(1, 0, 0);
 
     // Start is called before the first frame update
     void Start()
@@ -26,8 +25,6 @@ public class VoltageController : MonoBehaviour
 
         inputField.text = slider.value.ToString();
         inputField.onValueChanged.AddListener(x => OnInputFieldChanged(x));
-
-        UpdateCircleFill();
     }
 
     private void SetImageColor(Image img)
@@ -42,21 +39,11 @@ public class VoltageController : MonoBehaviour
         }
     }
 
-    private void UpdateCircleFill()
-    {
-        if (circleFill != null)
-        {
-            circleFill.fillAmount = slider.normalizedValue;
-            SetImageColor(circleFill);
-        }
-    }
-
     private void OnSliderChanged(float value)
     {
         // Slider has build in min and max so we don't need to do any checking
         inputField.text = value.ToString();
         SetImageColor(sliderFill);
-        UpdateCircleFill();
     }
 
     private void OnInputFieldChanged(string input)
@@ -68,17 +55,18 @@ public class VoltageController : MonoBehaviour
 
         if (value > maxValue)
         {
+            // Note: Setting this text recalls this function
             inputField.text = maxValue.ToString();
         }
         else if (value < minValue)
         {
+            // Note: Setting this text recalls this function
             inputField.text = minValue.ToString();
         }
         else
         {
             slider.value = value;
             SetImageColor(sliderFill);
-            UpdateCircleFill();
         }
     }
 }

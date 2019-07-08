@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class OilController : MonoBehaviour
+public class ModelController : MonoBehaviour
 {
     public MeshFilter OilMeshFilter;
     public MeshFilter WaterMeshFilter;
