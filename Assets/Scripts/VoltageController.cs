@@ -20,22 +20,22 @@ public class VoltageController : MonoBehaviour
         slider.minValue = minValue;
         slider.maxValue = maxValue;
         slider.value = defaultValue;
-        SetSliderColor();
+        SetImageColor(sliderFill);
         slider.onValueChanged.AddListener(x => OnSliderChanged(x));
 
         inputField.text = slider.value.ToString();
         inputField.onValueChanged.AddListener(x => OnInputFieldChanged(x));
     }
 
-    private void SetSliderColor()
+    private void SetImageColor(Image img)
     {
         if (slider.normalizedValue < .5)
         {
-            sliderFill.color = Color.Lerp(_green, _yellow, slider.normalizedValue * 2);
+            img.color = Color.Lerp(_green, _yellow, slider.normalizedValue * 2);
         }
         else
         {
-            sliderFill.color = Color.Lerp(_yellow, _red, (slider.normalizedValue - 0.5f) * 2);
+            img.color = Color.Lerp(_yellow, _red, (slider.normalizedValue - 0.5f) * 2);
         }
     }
 
@@ -43,7 +43,7 @@ public class VoltageController : MonoBehaviour
     {
         // Slider has build in min and max so we don't need to do any checking
         inputField.text = value.ToString();
-        SetSliderColor();
+        SetImageColor(sliderFill);
     }
 
     private void OnInputFieldChanged(string input)
@@ -55,16 +55,18 @@ public class VoltageController : MonoBehaviour
 
         if (value > maxValue)
         {
+            // Note: Setting this text recalls this function
             inputField.text = maxValue.ToString();
         }
         else if (value < minValue)
         {
+            // Note: Setting this text recalls this function
             inputField.text = minValue.ToString();
         }
         else
         {
             slider.value = value;
-            SetSliderColor();
+            SetImageColor(sliderFill);
         }
     }
 }
