@@ -1,13 +1,11 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 
 public class VoltageController : MonoBehaviour
 {
     public Slider slider;
     public Image sliderFill;
     public InputField inputField;
-    public TMP_InputField richInputField;
     public int minValue;
     public int maxValue;
     public float defaultValue;
@@ -27,12 +25,6 @@ public class VoltageController : MonoBehaviour
 
         inputField.text = slider.value.ToString();
         inputField.onValueChanged.AddListener(x => OnInputFieldChanged(x));
-
-        if (richInputField != null)
-        {
-            richInputField.text = slider.value.ToString();
-            richInputField.onValueChanged.AddListener(x => OnInputFieldChanged(x));
-        }
     }
 
     private void SetImageColor(Image img)
@@ -51,8 +43,6 @@ public class VoltageController : MonoBehaviour
     {
         // Slider has build in min and max so we don't need to do any checking
         inputField.text = value.ToString();
-        if (richInputField != null)
-            richInputField.text = value.ToString();
         SetImageColor(sliderFill);
     }
 
@@ -67,15 +57,11 @@ public class VoltageController : MonoBehaviour
         {
             // Note: Setting this text recalls this function
             inputField.text = maxValue.ToString();
-            if (richInputField != null)
-                richInputField.text = maxValue.ToString();
         }
         else if (value < minValue)
         {
             // Note: Setting this text recalls this function
             inputField.text = minValue.ToString();
-            if (richInputField != null)
-                richInputField.text = minValue.ToString();
         }
         else
         {
