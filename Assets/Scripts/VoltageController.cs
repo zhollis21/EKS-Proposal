@@ -6,9 +6,10 @@ public class VoltageController : MonoBehaviour
     public Slider slider;
     public Image sliderFill;
     public InputField inputField;
-    public int minValue;
-    public int maxValue;
+    public float minValue;
+    public float maxValue;
     public float defaultValue;
+    public Transform tempRod; // ToDo: Delete after demo
 
     private Color _green = new Color(0, 1, 0);
     private Color _yellow = new Color(1, 1, 0);
@@ -44,6 +45,10 @@ public class VoltageController : MonoBehaviour
         // Slider has build in min and max so we don't need to do any checking
         inputField.text = value.ToString();
         SetImageColor(sliderFill);
+
+        // ToDo: Delete after demo
+        if (tempRod != null)
+            tempRod.position = new Vector3(tempRod.position.x, value, tempRod.position.z);
     }
 
     private void OnInputFieldChanged(string input)
@@ -67,6 +72,10 @@ public class VoltageController : MonoBehaviour
         {
             slider.value = value;
             SetImageColor(sliderFill);
+
+            // ToDo: Delete after demo
+            if (tempRod != null)
+                tempRod.position = new Vector3(tempRod.position.x, value, tempRod.position.z);
         }
     }
 }
