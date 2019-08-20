@@ -54,6 +54,8 @@ public class ModelController : MonoBehaviour
 
     private void UpdateOilAndWaterMeshes()
     {
+        float lastRodYPosition = 0;
+
         for (int i = 0; i < _oilMeshes.Count; i++)
         {
             Position meshPosition;
@@ -92,8 +94,12 @@ public class ModelController : MonoBehaviour
 
             float yTop = UpperRods[i].transform.position.y;
 
-            _oilMeshes[i].vertices = GetVerticesForMeshAtYPoints(OilBottom, yTop, xLeftMidPoint, xRightMidPoint, meshPosition);
-            _waterMeshes[i].vertices = GetVerticesForMeshAtYPoints(yTop, WaterTop, xLeftMidPoint, xRightMidPoint, meshPosition);
+            _oilMeshes[i].vertices = GetVerticesForMeshAtYPoints(OilBottom, yTop, lastRodYPosition, xLeftMidPoint, xRightMidPoint, meshPosition);
+
+            // Water should always have a flat top so we always assume WaterTop will also be the last y position
+            _waterMeshes[i].vertices = GetVerticesForMeshAtYPoints(yTop, WaterTop, WaterTop, xLeftMidPoint, xRightMidPoint, meshPosition);
+
+            lastRodYPosition = yTop;
         }
     }
 
@@ -161,7 +167,7 @@ public class ModelController : MonoBehaviour
         return point;
     }
 
-    private Vector3[] GetVerticesForMeshAtYPoints(float yBottom, float yTop, float xLeftMidPoint, float xRightMidPoint, Position meshPosition)
+    private Vector3[] GetVerticesForMeshAtYPoints(float yBottom, float yTop, float previousRodY, float xLeftMidPoint, float xRightMidPoint, Position meshPosition)
     {
         var LowerFrontRight = GetFrontRightVerticesAtY(yBottom, xRightMidPoint, meshPosition);
         var LowerFrontLeft = GetFrontLeftVerticesAtY(yBottom, xLeftMidPoint, meshPosition);
@@ -171,6 +177,12 @@ public class ModelController : MonoBehaviour
         var UpperFrontLeft = GetFrontLeftVerticesAtY(yTop, xLeftMidPoint, meshPosition);
         var UpperBackRight = GetBackRightVerticesAtY(yTop, xRightMidPoint, meshPosition);
         var UpperBackLeft = GetBackLeftVerticesAtY(yTop, xLeftMidPoint, meshPosition);
+
+        // These are used to draw the left face to the height of the last rod
+        var leftFaceLowerFrontLeft = GetFrontLeftVerticesAtY(previousRodY, xLeftMidPoint, meshPosition);
+        var leftFaceUpperFrontLeft = GetFrontLeftVerticesAtY(yTop, xLeftMidPoint, meshPosition);
+        var leftFaceUpperBackLeft = GetBackLeftVerticesAtY(yTop, xLeftMidPoint, meshPosition);
+        var leftFaceLowerBackLeft = GetBackLeftVerticesAtY(previousRodY, xLeftMidPoint, meshPosition);
 
         return new Vector3[]
         {
@@ -198,13 +210,13 @@ public class ModelController : MonoBehaviour
             LowerFrontLeft,
             LowerBackLeft,
 
-            // Left Face
-            meshPosition == Position.Left ? LowerFrontLeft : Vector3.zero,
-            meshPosition == Position.Left ? UpperFrontLeft : Vector3.zero,
-            meshPosition == Position.Left ? UpperBackLeft : Vector3.zero,
-            meshPosition == Position.Left ? LowerBackLeft : Vector3.zero,
+            // Left Face (unless we are at the left we use the last rod's y position as the bottom
+            meshPosition == Position.Left ? LowerFrontLeft : leftFaceLowerFrontLeft,
+            meshPosition == Position.Left ? UpperFrontLeft : leftFaceUpperFrontLeft,
+            meshPosition == Position.Left ? UpperBackLeft :  leftFaceUpperBackLeft,
+            meshPosition == Position.Left ? LowerBackLeft :  leftFaceLowerBackLeft,
 
-            // Right Face
+            // Right Face (we only draw this if we are the far right mesh)
             meshPosition == Position.Right ? LowerBackRight : Vector3.zero,
             meshPosition == Position.Right ? UpperBackRight : Vector3.zero,
             meshPosition == Position.Right ? UpperFrontRight : Vector3.zero,
